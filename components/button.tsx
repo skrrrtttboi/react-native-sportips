@@ -12,7 +12,7 @@ interface ButtonProps extends Omit<TouchableOpacityProps, Override> {
 
 export const Button: React.FC<ButtonProps> = (props) => {
   return (
-    <TouchableOpacity {...props} style={styles.button}>
+    <TouchableOpacity {...props} style={styles.button} activeOpacity={0.8}>
       <Text style={styles.span}>{props.children}</Text>
       {props.icon && <props.icon size={18} color="#fff" />}
     </TouchableOpacity>

@@ -1,15 +1,41 @@
 import { Button } from "@/components/button";
 import { Field, Form } from "@/components/form";
 import { Header, Subtitle, Title } from "@/components/header";
-import { Input } from "@/components/input";
 import { Label } from "@/components/label";
 import { Link } from "expo-router";
 import { ArrowRight } from "lucide-react-native";
 import { StyleSheet, Text, View } from "react-native";
 
+import { FormInput } from "@/components/form-input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+const schema = z
+  .object({
+    name: z.string().min(5),
+    email: z.string().email(),
+    password: z.string().min(8),
+    confirm: z.string().min(8),
+  })
+  .refine((data) => data.password === data.confirm, {
+    message: "Passwords do not match",
+    path: ["confirm"],
+  });
+
 export default function RegisterScreen() {
-  const handleSubmit = () => {
-    console.log("Login");
+  const form = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      confirm: "",
+    },
+  });
+
+  const onSubmit = (data: z.infer<typeof schema>) => {
+    console.log(data);
   };
 
   return (
@@ -24,24 +50,44 @@ export default function RegisterScreen() {
       <Form>
         <Field>
           <Label>Username</Label>
-          <Input autoCapitalize="sentences" placeholder="Enter your name" />
+          <FormInput
+            name="name"
+            control={form.control}
+            placeholder="Enter your name"
+          />
         </Field>
         <Field>
           <Label>Email</Label>
-          <Input keyboardType="email-address" placeholder="Enter your email" />
+          <FormInput
+            name="email"
+            control={form.control}
+            autoCapitalize="none"
+            keyboardType="email-address"
+            placeholder="Enter your email"
+          />
         </Field>
         <Field>
           <Label>Password</Label>
-          <Input secureTextEntry={true} placeholder="Enter your password" />
+          <FormInput
+            name="password"
+            control={form.control}
+            secureTextEntry={true}
+            placeholder="Enter your password"
+          />
         </Field>
         <Field>
           <Label>Confirm Password</Label>
-          <Input secureTextEntry={true} placeholder="Confirm your password" />
+          <FormInput
+            name="confirm"
+            control={form.control}
+            secureTextEntry={true}
+            placeholder="Confirm your password"
+          />
         </Field>
       </Form>
 
       <View style={styles.actions}>
-        <Button onPress={handleSubmit} icon={ArrowRight}>
+        <Button onPress={form.handleSubmit(onSubmit)} icon={ArrowRight}>
           Create account
         </Button>
         <Link href="/login">
