@@ -16,7 +16,7 @@ export default function Layout() {
 				options={{
 					title: 'Home',
 					headerShadowVisible: false,
-					headerRight: () => <LogOut size={20} onPress={signout} aria-label='Log out' />,
+					headerRight: () => <LogOut size={20} onPress={() => signout()} aria-label='Log out' />,
 				}}
 			/>
 			<Stack.Screen

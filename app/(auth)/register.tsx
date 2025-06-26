@@ -45,7 +45,7 @@ export default function RegisterScreen() {
 		try {
 			setLoading(true);
 			await signup(data);
-			toast('Login successful');
+			toast('Register successful');
 		} catch (error: unknown) {
 			if (error instanceof AxiosError) toast(error.response?.data.message);
 		} finally {

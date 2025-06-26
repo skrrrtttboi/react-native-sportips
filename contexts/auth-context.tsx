@@ -54,8 +54,9 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
 		return session;
 	}, [session]);
 
-	onUnautenticated(() => {
-		signout();
+	onUnautenticated(async () => {
+		if (!session) return;
+		await signout();
 	});
 
 	React.useEffect(() => {
@@ -88,13 +89,16 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
 	const signin = async (credential: { email: string; password: string }) => {
 		const { data } = await axios.post('/login', credential);
 		await save(data);
-		router.replace('/');
 	};
 
-	const signup = async (credential: { name: string; email: string; password: string }) => {
+	const signup = async (credential: {
+		name: string;
+		email: string;
+		password: string;
+		password_confirmation: string;
+	}) => {
 		const { data } = await axios.post('/register', credential);
 		await save(data);
-		router.replace('/');
 	};
 
 	const signout = async () => {
