@@ -3,10 +3,7 @@ import { Loader2, LucideIcon } from 'lucide-react-native';
 import * as React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-type Override = 'style';
-type TouchableOpacityProps = React.ComponentProps<typeof TouchableOpacity>;
-
-interface ButtonProps extends Omit<TouchableOpacityProps, Override> {
+interface ButtonProps extends React.ComponentProps<typeof TouchableOpacity> {
 	children: React.ReactNode;
 	loading?: boolean;
 	icon?: LucideIcon;
@@ -16,7 +13,13 @@ export const Button: React.FC<ButtonProps> = ({ loading = false, ...props }) => 
 	return (
 		<TouchableOpacity
 			{...props}
-			style={[styles.button, { opacity: loading ? 0.5 : 1 }]}
+			style={[
+				styles.button,
+				props.style,
+				{
+					opacity: loading ? 0.5 : 1,
+				},
+			]}
 			activeOpacity={0.8}
 			disabled={loading}>
 			<Text style={styles.span}>{props.children}</Text>

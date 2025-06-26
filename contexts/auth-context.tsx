@@ -1,4 +1,4 @@
-import { axios } from '@/libs/axios';
+import { axios, onUnautenticated } from '@/libs/axios';
 import { toast } from '@/libs/toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
@@ -53,6 +53,10 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) =>
 		if (!session) return { user: null, token: null };
 		return session;
 	}, [session]);
+
+	onUnautenticated(() => {
+		signout();
+	});
 
 	React.useEffect(() => {
 		const load = async () => {

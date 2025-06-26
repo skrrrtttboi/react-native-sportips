@@ -6,11 +6,14 @@ import { Inter_700Bold } from '@expo-google-fonts/inter/700Bold';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 
 SplashScreen.preventAutoHideAsync();
+
+const client = new QueryClient();
 
 export default function RootLayout() {
 	const [loaded, error] = useFonts({
@@ -28,11 +31,13 @@ export default function RootLayout() {
 
 	return (
 		<AuthProvider>
-			<StatusBar style='auto' />
-			<Stack>
-				<Stack.Screen name='(protected)' options={{ headerShown: false, animation: 'none' }} />
-				<Stack.Screen name='(auth)' options={{ headerShown: false, animation: 'none' }} />
-			</Stack>
+			<QueryClientProvider client={client}>
+				<StatusBar style='auto' />
+				<Stack>
+					<Stack.Screen name='(protected)' options={{ headerShown: false, animation: 'none' }} />
+					<Stack.Screen name='(auth)' options={{ headerShown: false, animation: 'none' }} />
+				</Stack>
+			</QueryClientProvider>
 		</AuthProvider>
 	);
 }

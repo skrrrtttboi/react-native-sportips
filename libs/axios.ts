@@ -16,4 +16,18 @@ axios.interceptors.request.use(async (config) => {
 	return config;
 });
 
+let handleSignout = () => {};
+
+axios.interceptors.response.use(
+	(response) => response,
+	(error) => {
+		if (error.response?.status === 401) handleSignout();
+		return Promise.reject(error);
+	}
+);
+
+export const onUnautenticated = (callback: () => void) => {
+	handleSignout = callback;
+};
+
 export { axios, isAxiosError };

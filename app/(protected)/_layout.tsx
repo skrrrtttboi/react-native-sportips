@@ -19,6 +19,13 @@ export default function Layout() {
 					headerRight: () => <LogOut size={20} onPress={signout} aria-label='Log out' />,
 				}}
 			/>
+			<Stack.Screen
+				name='sports/[sport]'
+				options={{
+					title: 'Sport Details',
+					headerShadowVisible: false,
+				}}
+			/>
 		</Stack>
 	);
 }
